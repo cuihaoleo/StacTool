@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+                name="data"
+                type="com.example.stactool.MainActivityViewModel" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="12dp"
+            tools:context=".MainActivity">
+
+        <android.support.constraint.Guideline
+                android:id="@+id/vguide_033"
+                android:layout_width="1dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.33"/>
+
+        <android.support.constraint.Guideline
+                android:id="@+id/vguide_050"
+                android:layout_width="1dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.50"/>
+
+        <android.support.constraint.Guideline
+                android:id="@+id/vguide_066"
+                android:layout_width="1dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.66"/>
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:id="@+id/linear_layout_1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/vguide_033"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/linear_layout_param1">
+            <TextView
+                    android:text="Distribution"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"/>
+            <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:entries="@array/spinnerItems"
+                    android:selectedItemPosition="@={data.distribution}"
+                    android:id="@+id/spinner_mode"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/linear_layout_param1"
+                app:layout_constraintLeft_toRightOf="@+id/vguide_033"
+                app:layout_constraintRight_toLeftOf="@+id/vguide_066"
+                app:layout_constraintTop_toTopOf="parent">
+            <TextView
+                    android:text="@={data.param1Name}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/text_param1"
+                    android:textSize="12sp"/>
+            <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberSigned|numberDecimal"
+                    android:ems="10"
+                    android:text="@={data.param1}"
+                    android:id="@+id/edit_param1"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/linear_layout_param2"
+                android:visibility="@{data.param2Visibility, default=gone}"
+                app:layout_constraintLeft_toRightOf="@+id/vguide_066"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+            <TextView
+                    android:text="@={data.param2Name}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/text_param2"
+                    android:textSize="12sp"/>
+            <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberSigned|numberDecimal"
+                    android:ems="10"
+                    android:text="@={data.param2}"
+                    android:id="@+id/edit_param2"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/linear_layout_4"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/vguide_050"
+                app:layout_constraintTop_toBottomOf="@id/linear_layout_param1">
+            <TextView
+                    android:text="Cumulative Probability"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"/>
+            <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberSigned|numberDecimal"
+                    android:ems="10"
+                    android:text="@={data.cumulativeProbability}"
+                    android:id="@+id/edit_cum"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toRightOf="@+id/vguide_050"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linear_layout_param1">
+            <TextView
+                    android:text="Critical Value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"/>
+            <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberSigned|numberDecimal"
+                    android:ems="10"
+                    android:text="@={data.criticalValue}"
+                    android:id="@+id/edit_critical"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/linear_layout_6"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/vguide_050"
+                app:layout_constraintTop_toBottomOf="@id/linear_layout_4">
+            <TextView
+                    android:text="One-sided P-value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"/>
+            <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberSigned|numberDecimal"
+                    android:ems="10"
+                    android:id="@+id/edit_oneside_p"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toRightOf="@id/vguide_050"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linear_layout_4">
+            <TextView
+                    android:text="Two-sided P-value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"/>
+            <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberSigned|numberDecimal"
+                    android:ems="10"
+                    android:id="@+id/edit_twoside_p"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linear_layout_6"
+                app:layout_constraintBottom_toTopOf="@id/toggle_draw_mode">
+
+            <com.androidplot.xy.XYPlot
+                    style="@style/APDefacto.Dark"
+                    android:id="@+id/plot"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    app:title="A Simple XY Plot"
+                    app:rangeTitle="range"
+                    app:domainTitle="domain"
+                    app:lineLabels="left|bottom"
+                    app:lineLabelRotationBottom="-45"/>
+        </LinearLayout>
+
+        <ToggleButton
+                android:textOff="Plot Mode: PDF"
+                android:textOn="Plot Mode: CDF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/toggle_draw_mode"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+    </android.support.constraint.ConstraintLayout>
+</layout>

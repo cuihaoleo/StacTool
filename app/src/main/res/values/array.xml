@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="spinnerItems">
+        <item>Normal</item>
+        <item>t</item>
+        <item>Chi2</item>
+        <item>F</item>
+    </string-array>
+</resources>
