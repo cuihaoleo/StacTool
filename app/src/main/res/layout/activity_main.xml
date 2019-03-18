@@ -67,7 +67,7 @@
                 app:layout_constraintRight_toLeftOf="@+id/vguide_066"
                 app:layout_constraintTop_toTopOf="parent">
             <TextView
-                    android:text="@={data.param1Name}"
+                    android:text="@{data.param1Name}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/text_param1"
@@ -75,7 +75,7 @@
             <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="numberSigned|numberDecimal"
+                    android:inputType="@{data.param1InputType}"
                     android:ems="10"
                     android:text="@={data.param1}"
                     android:id="@+id/edit_param1"/>
@@ -91,7 +91,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
             <TextView
-                    android:text="@={data.param2Name}"
+                    android:text="@{data.param2Name}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/text_param2"
@@ -99,7 +99,7 @@
             <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="numberSigned|numberDecimal"
+                    android:inputType="@{data.param2InputType}"
                     android:ems="10"
                     android:text="@={data.param2}"
                     android:id="@+id/edit_param2"/>
@@ -121,9 +121,10 @@
             <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="numberSigned|numberDecimal"
+                    android:inputType="numberDecimal"
                     android:ems="10"
                     android:text="@={data.cumulativeProbability}"
+                    android:hint="@{data.cumulativeProbabilityHint}"
                     android:id="@+id/edit_cum"/>
         </LinearLayout>
 
@@ -145,7 +146,8 @@
                     android:inputType="numberSigned|numberDecimal"
                     android:ems="10"
                     android:text="@={data.criticalValue}"
-                    android:id="@+id/edit_critical"/>
+                    android:hint="@{data.criticalValueHint}"
+                    android:id="@+id/edit_critical" />
         </LinearLayout>
 
         <LinearLayout
@@ -203,11 +205,9 @@
                     android:id="@+id/plot"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    app:title="A Simple XY Plot"
-                    app:rangeTitle="range"
-                    app:domainTitle="domain"
                     app:lineLabels="left|bottom"
-                    app:lineLabelRotationBottom="-45"/>
+                    app:lineLabelRotationBottom="-45"
+                    app:legendVisible="false"/>
         </LinearLayout>
 
         <ToggleButton
