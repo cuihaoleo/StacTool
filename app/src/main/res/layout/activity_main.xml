@@ -4,6 +4,8 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View"/>
+        <import type="android.text.InputType"/>
         <variable
                 name="data"
                 type="com.example.stactool.MainActivityViewModel" />
@@ -67,7 +69,7 @@
                 app:layout_constraintRight_toLeftOf="@+id/vguide_066"
                 app:layout_constraintTop_toTopOf="parent">
             <TextView
-                    android:text="@{data.param1Name}"
+                    android:text="@{data.Companion.parameterNames[data.distribution].first}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/text_param1"
@@ -75,9 +77,11 @@
             <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="@{data.param1InputType}"
+                    android:inputType="@{InputType.TYPE_CLASS_NUMBER | data.Companion.inputRestrains[data.distribution].first}"
                     android:ems="10"
                     android:text="@={data.param1}"
+                    android:imeOptions="actionDone"
+                    app:error="@{data.paramError}"
                     android:id="@+id/edit_param1"/>
         </LinearLayout>
 
@@ -86,12 +90,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/linear_layout_param2"
-                android:visibility="@{data.param2Visibility, default=gone}"
+                android:visibility="@{data.Companion.parameterNames[data.distribution].second.length() > 0 ? View.VISIBLE : View.GONE}"
                 app:layout_constraintLeft_toRightOf="@+id/vguide_066"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
             <TextView
-                    android:text="@{data.param2Name}"
+                    android:text="@{data.Companion.parameterNames[data.distribution].second}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/text_param2"
@@ -99,9 +103,11 @@
             <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="@{data.param2InputType}"
+                    android:inputType="@{InputType.TYPE_CLASS_NUMBER | data.Companion.inputRestrains[data.distribution].second}"
                     android:ems="10"
+                    app:error="@{data.paramError}"
                     android:text="@={data.param2}"
+                    android:imeOptions="actionDone"
                     android:id="@+id/edit_param2"/>
         </LinearLayout>
 
@@ -125,6 +131,8 @@
                     android:ems="10"
                     android:text="@={data.cumulativeProbability}"
                     android:hint="@{data.cumulativeProbabilityHint}"
+                    app:error="@{data.cumulativeProbabilityError}"
+                    android:imeOptions="actionDone"
                     android:id="@+id/edit_cum"/>
         </LinearLayout>
 
@@ -147,47 +155,46 @@
                     android:ems="10"
                     android:text="@={data.criticalValue}"
                     android:hint="@{data.criticalValueHint}"
+                    android:imeOptions="actionDone"
                     android:id="@+id/edit_critical" />
         </LinearLayout>
 
         <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/linear_layout_6"
+                android:visibility="@{data.criticalValue.length() > 0 ? View.VISIBLE : View.INVISIBLE}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/vguide_050"
                 app:layout_constraintTop_toBottomOf="@id/linear_layout_4">
             <TextView
-                    android:text="One-sided P-value"
-                    android:layout_width="match_parent"
+                    android:text="One-sided P-value = "
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="12sp"/>
-            <EditText
+            <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="numberSigned|numberDecimal"
-                    android:ems="10"
+                    android:text="@{String.format(`%.2f`, data.oneP)}"
                     android:id="@+id/edit_oneside_p"/>
         </LinearLayout>
 
         <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:visibility="@{data.criticalValue.length() > 0 ? View.VISIBLE : View.INVISIBLE}"
                 app:layout_constraintLeft_toRightOf="@id/vguide_050"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/linear_layout_4">
             <TextView
-                    android:text="Two-sided P-value"
-                    android:layout_width="match_parent"
+                    android:text="Two-sided P-value = "
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="12sp"/>
-            <EditText
+            <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="numberSigned|numberDecimal"
-                    android:ems="10"
+                    android:text="@{String.format(`%.2f`, data.oneP*2)}"
                     android:id="@+id/edit_twoside_p"/>
         </LinearLayout>
 
@@ -195,16 +202,21 @@
         <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:id="@+id/linear_layout_8"
+                android:layout_marginTop="10dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/linear_layout_6"
-                app:layout_constraintBottom_toTopOf="@id/toggle_draw_mode">
+                app:layout_constraintBottom_toBottomOf="parent">
 
             <com.androidplot.xy.XYPlot
-                    style="@style/APDefacto.Dark"
+                    style="@style/APDefacto.Light"
                     android:id="@+id/plot"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
+                    app:graphMarginTop="36dp"
+                    app:graphMarginLeft="36dp"
+                    app:graphMarginBottom="30dp"
                     app:lineLabels="left|bottom"
                     app:lineLabelRotationBottom="-45"
                     app:legendVisible="false"/>
@@ -213,10 +225,11 @@
         <ToggleButton
                 android:textOff="Plot Mode: PDF"
                 android:textOn="Plot Mode: CDF"
+                android:checked="@={data.plotMode}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/toggle_draw_mode"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/linear_layout_8"/>
     </android.support.constraint.ConstraintLayout>
 </layout>
