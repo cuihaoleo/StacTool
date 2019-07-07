@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:height="50dp"
+        android:width="100dp"
+        android:viewportHeight="50"
+        android:viewportWidth="100"
+        android:tintMode="multiply"
+        android:tint="@color/plot_icon">
+
+    <path android:pathData="M10,44 L20,35 L30,23 L40,10 L50,5 L60,10 L70,23 L80,35 L90,44"
+          android:strokeColor="#000000"
+          android:strokeWidth="2"/>
+
+    <path android:fillColor="#FFAAAA"
+          android:pathData="M10,44 L20,35 L30,23 L30,44"
+          android:strokeColor="#000"
+          android:strokeWidth="2"/>
+
+    <path android:fillColor="#FFAAAA"
+          android:pathData="M90,44 L80,35 L70,23 L70,44"
+          android:strokeColor="#000"
+          android:strokeWidth="2"/>
+</vector>

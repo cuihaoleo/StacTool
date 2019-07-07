@@ -1,21 +1,29 @@
 package com.example.stactool
 
-import android.app.Activity
+import android.content.res.ColorStateList
 import android.databinding.BaseObservable
 import android.databinding.Bindable
 import android.databinding.DataBindingUtil
 import android.databinding.Observable
 import android.graphics.Color
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
+import android.text.Editable
 import android.text.InputType
+import android.text.TextWatcher
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.EditText
+import android.widget.RadioButton
 import com.androidplot.xy.*
 import com.example.stactool.databinding.ActivityMainBinding
 import org.apache.commons.math3.distribution.*
 import org.apache.commons.math3.exception.MathIllegalArgumentException
 import java.text.DecimalFormat
 import java.text.FieldPosition
-
+import kotlinx.android.synthetic.main.activity_main.*
+import org.w3c.dom.Text
 
 private const val LOG_TAG = "MainActivity"
 
@@ -285,19 +293,100 @@ class MainActivityViewModel: BaseObservable() {
 
     val oneP: Double
         @Bindable get() {
-            return try {
-                _distribution.cumulativeProbability(_criticalValue)
+            var cum = 0.0
+            try {
+                cum = _distribution.cumulativeProbability(_criticalValue)
             } catch (e: MathIllegalArgumentException) {
-                Double.NaN
+                return Double.NaN
             }
+
+            return 0.5 - Math.abs(cum - 0.5)
         }
 }
 
-class MainActivity: Activity() {
-    val bindingData = MainActivityViewModel()
+class MainActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
+    companion object {
+        val parameterNames = arrayOf(
+            Pair("Population Mean", "Population SD"),
+            Pair("Degrees of Freedom", ""),
+            Pair("Degrees of Freedom", ""),
+            Pair("1st Deg of Freedom", "2nd Deg of Freedom"))
+
+        val defaultParams = arrayOf(
+            Pair(0, 1),
+            Pair(10, 0),
+            Pair(2, 0),
+            Pair(5, 10)
+        )
+
+        val inputRestrains = arrayOf(
+            Pair(InputType.TYPE_NUMBER_FLAG_DECIMAL or InputType.TYPE_NUMBER_FLAG_SIGNED, InputType.TYPE_NUMBER_FLAG_DECIMAL),
+            Pair(0, 0),
+            Pair(0, 0),
+            Pair(InputType.TYPE_NUMBER_FLAG_DECIMAL, InputType.TYPE_NUMBER_FLAG_DECIMAL)
+        )
+
+        val plotRange = arrayOf(
+            Pair(0.001, 0.999),
+            Pair(0.001, 0.999),
+            Pair(0.000, 0.999),
+            Pair(0.010, 0.990)
+        )
+
+        val dummyDistribution = object: AbstractRealDistribution() {
+            override fun getSupportUpperBound() = Double.NEGATIVE_INFINITY
+            override fun getSupportLowerBound() = Double.POSITIVE_INFINITY
+            override fun isSupportLowerBoundInclusive() = false
+            override fun isSupportUpperBoundInclusive() = false
+            override fun cumulativeProbability(x: Double) = Double.NaN
+            override fun getNumericalMean() = Double.NaN
+            override fun isSupportConnected() = true
+            override fun getNumericalVariance() = Double.NaN
+            override fun density(x: Double) = Double.NaN
+        }
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {}
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        Log.d(LOG_TAG, "spinner_mode: select $position")
+
+        when (position) {
+            0 -> {
+                linear_layout_param2.visibility = View.VISIBLE
+                text_param1.text = "Population Mean"
+                text_param2.text = "Population SD"
+                edit_param1.setText("0")
+                edit_param2.setText("1")
+                edit_param1.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL or InputType.TYPE_NUMBER_FLAG_SIGNED
+                edit_param2.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
+            }
+            1 -> {
+                linear_layout_param2.visibility = View.INVISIBLE
+                text_param1.text = "Degrees of Freedom"
+                edit_param1.setText("10")
+                edit_param1.inputType = InputType.TYPE_CLASS_NUMBER
+            }
+            2 -> {
+                linear_layout_param2.visibility = View.INVISIBLE
+                text_param1.text = "Degrees of Freedom"
+                edit_param1.setText("10")
+                edit_param1.inputType = InputType.TYPE_CLASS_NUMBER
+            }
+            3 -> {
+                linear_layout_param2.visibility = View.VISIBLE
+                text_param1.text = "1st Deg of Freedom"
+                text_param2.text = "2nd Deg of Freedom"
+                edit_param1.setText("5")
+                edit_param2.setText("10")
+                edit_param1.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
+                edit_param2.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
+            }
+        }
+    }
 
     val plot by lazy {
-        val view = findViewById<XYPlot>(R.id.plot);
+        val view = findViewById<XYPlot>(R.id.plot)
         val formatter = object: DecimalFormat() {
             override fun format(number: Double, result: StringBuffer, fieldPosition: FieldPosition): StringBuffer {
                 return result.append(String.format("%.2G", number))
@@ -309,9 +398,115 @@ class MainActivity: Activity() {
         view
     }
 
+    var distribution: AbstractRealDistribution? = null
+
+    private val distributionWatcher = object: TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+            val param1 = edit_param1.text.toString().toDoubleOrNull() ?: Double.NaN
+            val param2 = edit_param2.text.toString().toDoubleOrNull() ?: Double.NaN
+
+            try {
+                if (spinner_mode.selectedItemId == 0L) {
+                    distribution = NormalDistribution(param1, param2)
+                } else if (spinner_mode.selectedItemId == 1L) {
+                    distribution = TDistribution(param1)
+                } else if (spinner_mode.selectedItemId == 2L) {
+                    distribution = ChiSquaredDistribution(param1)
+                } else if (spinner_mode.selectedItemId == 3L) {
+                    distribution = FDistribution(param1, param2)
+                }
+            } catch (e: MathIllegalArgumentException) {
+                distribution = null
+            }
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        setContentView(R.layout.activity_main)
+
+        spinner_mode.onItemSelectedListener = this
+        spinner_mode.setSelection(0)
+
+        radio_cdf_to_pdf.isChecked = true
+        onRadioButtonClicked(radio_cdf_to_pdf)
+
+        edit_param1.addTextChangedListener(distributionWatcher)
+        edit_param2.addTextChangedListener(distributionWatcher)
+
+        var currentFocus: EditText? = null
+        edit_cum.addTextChangedListener(object: TextWatcher{
+            override fun afterTextChanged(s: Editable?) {
+                var badFlag = false
+                if (currentFocus == null) currentFocus = edit_cum else return
+
+                val number = s?.toString()?.toDoubleOrNull()
+                val critical = if (s == null || s.isEmpty()) {
+                    Double.NaN
+                } else if (number == null) {
+                    edit_cum.error = "Invalid value."
+                    Double.NaN
+                } else if (number > 1.0 || number < 0.0) {
+                    edit_cum.error = "Out of range (0.0 to 1.0)."
+                    Double.NaN
+                } else {
+                    try {
+                        distribution?.inverseCumulativeProbability(number) ?: Double.NaN
+                    } catch (e: MathIllegalArgumentException) {
+                        Double.NaN
+                    }
+                }
+
+                if (critical.isNaN()) {
+                    edit_critical.setText("N/A")
+                    edit_critical_single.setText("N/A")
+                    edit_critical_v1.setText("N/A")
+                    edit_critical_v2.setText("N/A")
+                    edit_oneside_p.text = "N/A"
+                } else {
+                    edit_critical.setText("%.5f".format(critical))
+                    edit_critical_single.setText("%.5f".format(critical))
+                    edit_critical_v1.setText("Jisuan")
+                    edit_critical_v2.setText("Jisuan")
+                    edit_oneside_p.text = "Jisuan"
+                }
+
+                currentFocus = null
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        edit_critical.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                var badFlag = false
+                if (currentFocus == null) currentFocus = edit_critical else return
+
+                val dist = distribution
+                val number = s?.toString()?.toDoubleOrNull()
+
+                if (dist == null || s == null || s.isEmpty()) {
+                    badFlag = true
+                } else if (number == null) {
+                    edit_cum.error = "Invalid value."
+                    badFlag = true
+                } else if (number > 1.0 || number < 0.0) {
+                    edit_cum.error = "Out of range (0.0 to 1.0)."
+                    badFlag = true
+                }
+
+                currentFocus = null
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        /*val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         bindingData.addOnPropertyChangedCallback(object: Observable.OnPropertyChangedCallback()  {
             var series1: XYSeries? = null
@@ -367,6 +562,54 @@ class MainActivity: Activity() {
             }
         })
 
-        binding.data = bindingData
+        binding.data = bindingData*/
     }
+
+    fun onRadioButtonClicked(view: View) {
+        if (view is RadioButton) {
+            // Is the button now checked?
+            val checked = view.isChecked
+
+            // Check which radio button was clicked
+            when (view.getId()) {
+                R.id.radio_cdf_to_pdf ->
+                    if (checked) {
+                        label_cum.text = "Cumulative Probability"
+                        lle_critical.visibility = View.VISIBLE
+                        lle_critical_single.visibility = View.GONE
+                        lle_critical_two.visibility = View.GONE
+                        lle_oneside_p.visibility = View.VISIBLE
+                        Log.d(LOG_TAG, "Mode: cdf_to_pdf")
+                    }
+                R.id.radio_two_sided ->
+                    if (checked) {
+                        label_cum.text = "Significance Level"
+                        lle_critical.visibility = View.INVISIBLE
+                        lle_critical_single.visibility = View.GONE
+                        lle_critical_two.visibility = View.VISIBLE
+                        lle_oneside_p.visibility = View.GONE
+                        Log.d(LOG_TAG, "Mode: two_sided")
+                    }
+                R.id.radio_left_one_sided ->
+                    if (checked) {
+                        label_cum.text = "Significance Level"
+                        lle_critical.visibility = View.GONE
+                        lle_critical_single.visibility = View.VISIBLE
+                        lle_critical_two.visibility = View.GONE
+                        lle_oneside_p.visibility = View.GONE
+                        Log.d(LOG_TAG, "Mode: left_one_sided")
+                    }
+                R.id.radio_right_one_sided ->
+                    if (checked) {
+                        label_cum.text = "Significance Level"
+                        lle_critical.visibility = View.GONE
+                        lle_critical_single.visibility = View.VISIBLE
+                        lle_critical_two.visibility = View.GONE
+                        lle_oneside_p.visibility = View.GONE
+                        Log.d(LOG_TAG, "Mode: right_one_sided")
+                    }
+            }
+        }
+    }
+
 }
