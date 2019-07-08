@@ -13,19 +13,20 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <RadioButton
-                android:text="CDF &lt;-&gt; ICDF"
-                android:button="@null"
-                android:gravity="center"
-                android:drawableTop="@drawable/ic_cdf_to_pdf"
+                android:id="@+id/radio_cdf_to_pdf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/radio_cdf_to_pdf"
-                android:textSize="10sp"
+                android:layout_weight="1"
+                android:button="@null"
+                android:drawableTop="@drawable/ic_cdf_to_pdf"
+                android:gravity="center"
+                android:onClick="onRadioButtonClicked"
+                android:text="CDF &lt;-&gt; ICDF"
                 android:textAllCaps="true"
                 android:textColor="@color/radio_button_text"
-                android:layout_weight="1"
-                android:onClick="onRadioButtonClicked" />
+                android:textSize="10sp" />
             <RadioButton
                 android:text="Two-sided test"
                 android:button="@null"
@@ -101,7 +102,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:entries="@array/spinnerItems"
-                            android:id="@+id/spinner_mode"/>
+                            android:id="@+id/spinner_distribution"/>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -206,8 +207,9 @@
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="numberSigned|numberDecimal"
+                        android:inputType="none"
                         android:ems="10"
+                        android:focusable="false"
                         android:imeOptions="actionDone"
                         android:id="@+id/edit_critical_single"
                         android:backgroundTint="@android:color/transparent"/>
@@ -257,6 +259,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="none"
                         android:ems="10"
+                        android:focusable="false"
                         android:imeOptions="actionDone"
                         android:id="@+id/edit_critical_v2"
                         android:backgroundTint="@android:color/transparent"/>
@@ -294,29 +297,30 @@
                 android:layout_marginTop="10dp">
 
                 <com.androidplot.xy.XYPlot
-                    android:id="@+id/plot"
+                    android:id="@+id/plot_view"
+                    style="@style/APDefacto.Light"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    style="@style/APDefacto.Light"
-                    app:graphMarginTop="36dp"
-                    app:graphMarginLeft="36dp"
-                    app:graphMarginBottom="30dp"
-                    app:lineLabels="left|bottom"
-                    app:lineLabelRotationBottom="-45"
-                    app:legendVisible="false"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:graphMarginBottom="20dp"
+                    app:graphMarginLeft="20dp"
+                    app:paddingTop="10dp"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:legendVisible="false"
+                    app:lineLabelRotationBottom="-30"
+                    app:lineLabels="left|bottom" />
 
-                <ToggleButton
-                    android:textOff="Plot Mode: PDF"
-                    android:textOn="Plot Mode: CDF"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/toggle_draw_mode"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:textStyle="italic"
+                    android:text="Touch to switch between CDF &amp; PDF." />
             </android.support.constraint.ConstraintLayout>
         </LinearLayout>
     </LinearLayout>
