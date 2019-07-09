@@ -1,20 +1,19 @@
 package com.example.stactool
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.app.Dialog
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
 import android.util.Log
-import android.view.Menu
-import android.view.MotionEvent
-import android.view.View
+import android.view.*
 import android.view.inputmethod.InputMethodManager
-import android.widget.AdapterView
-import android.widget.EditText
-import android.widget.RadioButton
+import android.widget.*
 import com.androidplot.xy.BoundaryMode
 import com.androidplot.xy.LineAndPointFormatter
 import com.androidplot.xy.SimpleXYSeries
@@ -82,8 +81,8 @@ class MainActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
             3 -> {
                 plotRange = 0.01..0.99
                 linear_layout_param2.visibility = View.VISIBLE
-                text_param1.text = "1st Deg of Freedom"
-                text_param2.text = "2nd Deg of Freedom"
+                text_param1.text = "1st Deg. of Freedom"
+                text_param2.text = "2nd Deg. of Freedom"
                 edit_param1.setText("5")
                 edit_param2.setText("10")
                 edit_param1.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
@@ -165,7 +164,7 @@ class MainActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
             Double.NaN
         }
 
-        fun getSeriesPDF(nPoints: Int = 100): SimpleXYSeries {
+        fun getSeriesPDF(nPoints: Int = 500): SimpleXYSeries {
             val xVal: MutableList<Double> = arrayListOf()
             val yVal: MutableList<Double> = arrayListOf()
             val range = plotRightBound - plotLeftBound
@@ -179,7 +178,7 @@ class MainActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
             return SimpleXYSeries(xVal, yVal, "")
         }
 
-        fun getSeriesCDF(nPoints: Int = 100): SimpleXYSeries {
+        fun getSeriesCDF(nPoints: Int = 500): SimpleXYSeries {
             val xVal: MutableList<Double> = arrayListOf()
             val yVal: MutableList<Double> = arrayListOf()
             val range = plotRightBound - plotLeftBound
@@ -193,11 +192,11 @@ class MainActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
             return SimpleXYSeries(xVal, yVal, "")
         }
 
-        fun getSeries(nPoints: Int = 100): SimpleXYSeries {
+        fun getSeries(nPoints: Int = 500): SimpleXYSeries {
             return if (plotCDF) getSeriesCDF(nPoints) else getSeriesPDF(nPoints)
         }
 
-        fun getSeries2PDF(nPoints: Int = 100): SimpleXYSeries {
+        fun getSeries2PDF(nPoints: Int = 500): SimpleXYSeries {
 
             val (leftEnd, rightStart) = when (currentMode) {
                 R.id.radio_cdf_to_pdf -> Pair(leftCritical, plotRightBound)
@@ -220,7 +219,7 @@ class MainActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
             return SimpleXYSeries(xVal, yVal, "")
         }
 
-        fun getSeries2(nPoints: Int = 100): SimpleXYSeries {
+        fun getSeries2(nPoints: Int = 500): SimpleXYSeries {
             return if (plotCDF) {
                 SimpleXYSeries(listOf<Double>(), listOf<Double>(), "")
             } else {
@@ -243,12 +242,12 @@ class MainActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
             plot_view.addSeries(
                 series1,
-                LineAndPointFormatter(Color.RED, null, null, null)
+                LineAndPointFormatter(0x7F111111, null, null, null)
             )
 
             plot_view.addSeries(
                 series2,
-                LineAndPointFormatter(0x7FFF851B, null, 0x7FFF851B, null)
+                LineAndPointFormatter(0x7F111111, null, 0x7F2ECC40, null)
             )
 
             plot_view.setDomainBoundaries(plotLeftBound, plotRightBound, BoundaryMode.AUTO)
@@ -369,6 +368,48 @@ class MainActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
         val inflater = menuInflater
         inflater.inflate(R.menu.action_bar_menu, menu)
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle item selection
+        return when (item.itemId) {
+            R.id.menu_cheatsheet -> {
+                val dialog = Dialog(this)
+                dialog.setTitle("Random Variables and the Distributions They Have")
+                dialog.setContentView(layoutInflater.inflate(R.layout.cheatsheet_dialog, null))
+                dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                dialog.findViewById<Button>(R.id.btn_close).setOnClickListener {
+                    dialog.dismiss()
+                }
+                dialog.show()
+                true
+            }
+            R.id.menu_about -> {
+                val alertDialog = this.let {
+                    val builder = AlertDialog.Builder(it)
+                    builder.apply {
+                        setPositiveButton("OK") { dialog, id ->
+                            dialog.dismiss()
+                        }
+                        setTitle("StacTool")
+                        setMessage("A Statistical Toolbox for Analytical Chemistry.\n\n" +
+                                   "by Limin Shao <lshao@ustc.edu.cn>\n" +
+                                   "   Hao Cui <cuihao.leo@gmail.com>")
+                    }
+                    builder.create()
+                }
+                alertDialog.show()
+                val textView = alertDialog.findViewById<TextView>(android.R.id.message)
+                textView.setTextSize(12F)
+                textView.typeface = Typeface.MONOSPACE
+                true
+            }
+            R.id.menu_exit -> {
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     fun onRadioButtonClicked(view: View) {

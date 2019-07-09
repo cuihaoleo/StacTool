@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/formula_list"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:textColor="@color/ap_black"
+            android:textSize="16sp"
+            android:textAllCaps="true"
+            android:layout_marginBottom="12dp"
+            android:id="@+id/dialog_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Random Variables and the Distributions They Have" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <katex.hourglass.in.mathlib.MathView
+                app:setTextSize="10sp"
+                app:setText="$U=\\frac{\\bar{X}-\\mu}{\\sigma}\\sqrt{n}$"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+            <katex.hourglass.in.mathlib.MathView
+                app:setTextSize="10sp"
+                app:setText="$U \\sim N(0,1)$"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <katex.hourglass.in.mathlib.MathView
+                app:setTextSize="10sp"
+                app:setText="$\\chi^2 = \\frac{(n-1)s^2}{\\sigma^2}$"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+            <katex.hourglass.in.mathlib.MathView
+                app:setTextSize="10sp"
+                app:setText="$\\chi^2 \\sim \\chi^2(n-1)$"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <katex.hourglass.in.mathlib.MathView
+                app:setTextSize="10sp"
+                app:setText="$T = \\frac{\\bar{x}-\\mu}{s}\\sqrt{n}$"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+            <katex.hourglass.in.mathlib.MathView
+                app:setTextSize="10sp"
+                app:setText="$T \\sim t(n-1)$"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <katex.hourglass.in.mathlib.MathView
+                app:setTextSize="10sp"
+                app:setText="$F=\\frac{s_1^2}{s_2^2}$"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+            <katex.hourglass.in.mathlib.MathView
+                app:setTextSize="10sp"
+                app:setText="$F \\sim F(f_1, f_2)$"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <katex.hourglass.in.mathlib.MathView
+                app:setTextSize="10sp"
+                app:setText="$T=\\frac{\\bar{x}_1-\\bar{x}_2}{\\bar{s}}\\sqrt{\\frac{mn}{m+n}}$"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+            <katex.hourglass.in.mathlib.MathView
+                app:setTextSize="10sp"
+                app:setText="$T \\sim t(m+n-2)$"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <katex.hourglass.in.mathlib.MathView
+                app:setTextSize="10sp"
+                app:setText="$\\bar{s} = \\sqrt{\\frac{(m-1)s_1^2+(n-1)s_2^2}{m+n-2}}$"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btn_close"
+        app:layout_constraintTop_toBottomOf="@id/formula_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Close" />
+</android.support.constraint.ConstraintLayout>

@@ -6,6 +6,10 @@
         android:title="Cheatsheet"
         app:showAsAction="never" />
     <item
+        android:id="@+id/menu_about"
+        android:title="About"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/menu_exit"
         android:title="Exit"
         app:showAsAction="never" />

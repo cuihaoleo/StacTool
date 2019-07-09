@@ -121,7 +121,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:imeOptions="actionDone"
+                        android:selectAllOnFocus="true"
+                        android:imeOptions="actionNext"
                         android:id="@+id/edit_param1"/>
                 </LinearLayout>
 
@@ -140,7 +141,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:imeOptions="actionDone"
+                        android:selectAllOnFocus="true"
+                        android:imeOptions="actionNext"
                         android:id="@+id/edit_param2"/>
                 </LinearLayout>
             </LinearLayout>
@@ -170,6 +172,7 @@
                         android:inputType="numberDecimal"
                         android:ems="10"
                         android:imeOptions="actionDone"
+                        android:selectAllOnFocus="true"
                         android:id="@+id/edit_cum"/>
                 </LinearLayout>
 
@@ -190,6 +193,7 @@
                         android:inputType="numberSigned|numberDecimal"
                         android:ems="10"
                         android:imeOptions="actionDone"
+                        android:selectAllOnFocus="true"
                         android:id="@+id/edit_critical" />
                 </LinearLayout>
 
@@ -204,15 +208,20 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="12sp"/>
-                    <EditText
+                    <LinearLayout
+                        android:background="#0F000000"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="none"
-                        android:ems="10"
-                        android:focusable="false"
-                        android:imeOptions="actionDone"
-                        android:id="@+id/edit_critical_single"
-                        android:backgroundTint="@android:color/transparent"/>
+                        android:layout_height="wrap_content">
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:ems="10"
+                            android:focusable="false"
+                            android:imeOptions="actionDone"
+                            android:id="@+id/edit_critical_single"
+                            android:backgroundTint="@android:color/transparent"/>
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
 
@@ -224,6 +233,7 @@
                 android:layout_height="wrap_content">
 
                 <LinearLayout
+                    android:layout_marginEnd="8dp"
                     android:orientation="vertical"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -233,15 +243,20 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="12sp"/>
-                    <EditText
+                    <LinearLayout
+                        android:background="#0F000000"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="none"
-                        android:ems="10"
-                        android:focusable="false"
-                        android:imeOptions="actionDone"
-                        android:id="@+id/edit_critical_v1"
-                        android:backgroundTint="@android:color/transparent"/>
+                        android:layout_height="wrap_content">
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:ems="10"
+                            android:focusable="false"
+                            android:imeOptions="actionDone"
+                            android:id="@+id/edit_critical_v1"
+                            android:backgroundTint="@android:color/transparent"/>
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -254,15 +269,20 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="12sp"/>
-                    <EditText
+                    <LinearLayout
+                        android:background="#0F000000"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="none"
-                        android:ems="10"
-                        android:focusable="false"
-                        android:imeOptions="actionDone"
-                        android:id="@+id/edit_critical_v2"
-                        android:backgroundTint="@android:color/transparent"/>
+                        android:layout_height="wrap_content">
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:ems="10"
+                            android:focusable="false"
+                            android:imeOptions="actionDone"
+                            android:id="@+id/edit_critical_v2"
+                            android:backgroundTint="@android:color/transparent"/>
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
 
@@ -301,9 +321,18 @@
                     style="@style/APDefacto.Light"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    app:backgroundColor="#FFF"
+                    app:graphBackgroundColor="#FFF"
+                    app:titleTextSize="16sp"
                     app:graphMarginBottom="20dp"
                     app:graphMarginLeft="20dp"
                     app:paddingTop="10dp"
+                    app:domainLineColor="@color/ap_transparent"
+                    app:rangeLineColor="@color/ap_transparent"
+                    app:domainStepMode="subdivide"
+                    app:domainStep="5"
+                    app:rangeStepMode="subdivide"
+                    app:rangeStep="5"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
