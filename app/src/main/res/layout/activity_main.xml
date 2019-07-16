@@ -19,6 +19,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:maxLines="2"
                 android:button="@null"
                 android:drawableTop="@drawable/ic_cdf_to_pdf"
                 android:gravity="center"
@@ -29,6 +30,7 @@
                 android:textSize="10sp" />
             <RadioButton
                 android:text="Two-sided test"
+                android:maxLines="2"
                 android:button="@null"
                 android:gravity="center"
                 android:drawableTop="@drawable/ic_two_sided"
@@ -42,6 +44,7 @@
                 android:onClick="onRadioButtonClicked" />
             <RadioButton
                 android:text="Left one-sided\ntest"
+                android:maxLines="2"
                 android:button="@null"
                 android:gravity="center"
                 android:drawableTop="@drawable/ic_left_one_sided"
@@ -55,6 +58,7 @@
                 android:onClick="onRadioButtonClicked" />
             <RadioButton
                 android:text="Right one-sided\ntest"
+                android:maxLines="2"
                 android:button="@null"
                 android:gravity="center"
                 android:drawableTop="@drawable/ic_right_one_sided"
@@ -89,6 +93,7 @@
                         android:text="Distribution"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:maxLines="1"
                         android:textSize="12sp"/>
                     <LinearLayout
                         android:orientation="horizontal"
@@ -115,11 +120,13 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:maxLines="1"
                         android:id="@+id/text_param1"
                         android:textSize="12sp"/>
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:maxLines="1"
                         android:ems="10"
                         android:selectAllOnFocus="true"
                         android:imeOptions="actionNext"
@@ -135,11 +142,13 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:maxLines="1"
                         android:id="@+id/text_param2"
                         android:textSize="12sp"/>
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:maxLines="1"
                         android:ems="10"
                         android:selectAllOnFocus="true"
                         android:imeOptions="actionNext"
@@ -164,11 +173,13 @@
                         android:text=""
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:maxLines="1"
                         android:id="@+id/label_cum"
                         android:textSize="12sp"/>
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:maxLines="1"
                         android:inputType="numberDecimal"
                         android:ems="10"
                         android:imeOptions="actionDone"
@@ -186,10 +197,12 @@
                         android:text="Critical Value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:maxLines="1"
                         android:textSize="12sp"/>
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:maxLines="1"
                         android:inputType="numberSigned|numberDecimal"
                         android:ems="10"
                         android:imeOptions="actionDone"
@@ -207,6 +220,7 @@
                         android:text="Critical Value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:maxLines="1"
                         android:textSize="12sp"/>
                     <LinearLayout
                         android:background="#0F000000"
@@ -215,6 +229,7 @@
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:maxLines="1"
                             android:inputType="none"
                             android:ems="10"
                             android:focusable="false"
@@ -242,6 +257,7 @@
                         android:text="Critical Value 1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:maxLines="1"
                         android:textSize="12sp"/>
                     <LinearLayout
                         android:background="#0F000000"
@@ -250,6 +266,7 @@
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:maxLines="1"
                             android:inputType="none"
                             android:ems="10"
                             android:focusable="false"
@@ -266,6 +283,7 @@
                     android:layout_height="wrap_content">
                     <TextView
                         android:text="Critical Value 2"
+                        android:maxLines="1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="12sp"/>
@@ -276,6 +294,7 @@
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:maxLines="1"
                             android:inputType="none"
                             android:ems="10"
                             android:focusable="false"
